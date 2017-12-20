@@ -10,5 +10,7 @@ Run:
 3. Run on http://localhost:3000
 
 More URLs can be reach as below
+
 http://localhost:3000/api/hotels
+
 http://localhost:3000/api/hotels/{number} ( {number} between 1 to 10 )
