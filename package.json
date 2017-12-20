@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-hotelsite",
+  "version": "1.0.0",
+  "description": "MEAN Stack Project",
+  "main": "app.js",
+  "repository": "https://github.com/mananmehtagit/nodejs-hotelsite.git",
+  "author": "Manan Mehta",
+  "license": "MIT",
+  "scripts": {
+    "start": "node app.js",
+    "watch": "nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1",
+    "nodemon": "^1.14.0"
+  }
+}
