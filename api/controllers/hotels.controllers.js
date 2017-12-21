@@ -1,8 +1,12 @@
 var hotelData = require('../data/hotel-data.json');
+var dbconnection = require('../data/mongodbconnection.js');
 
 module.exports = {
 
     getAllHotels : (req, res) => {
+
+        let db = dbconnection.getConn();
+        console.log('GET /hotels db');  
         console.log('GET /hotels');
         console.log('GET /hotel query',req.query);
 
