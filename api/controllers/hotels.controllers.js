@@ -1,14 +1,13 @@
 var hotelData = require('../data/hotel-data.json');
 var dbconnection = require('../data/mongodbconnection.js');
+var ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
 
     getAllHotels : (req, res) => {
 
         let db = dbconnection.getConn();
-        console.log('GET /hotels db');  
-        console.log('GET /hotels');
-        console.log('GET /hotel query',req.query);
+        let collection = db.collection('hotels');
 
         let offset = 0;
         let count  = 5;
@@ -19,32 +18,58 @@ module.exports = {
         if(req.query && req.query.count){
             count = parseInt(req.query.count, 10);
         }
+        collection.find().skip(offset).limit(count).toArray((err, docs) => {
+            // console.log("Found Hotels", docs);
+            res.status(200);
+            res.json(docs);
+        });
 
-        var returnData = hotelData.slice(offset, offset + count);
-        res.status(200);
+        console.log('GET /hotels db');
+        console.log('GET /hotels');
+        console.log('GET /hotel query',req.query);
 
-        if(req.query.offset || req.query.count){
-            res.json(returnData);
-        }else{
-            res.json(hotelData);
-        }
     },
 
     getOneHotel : (req, res) => {
+        let db = dbconnection.getConn();
+        let collection = db.collection('hotels');
+
         let hotelId  = req.params.hotelId;
-        let thisHotel = hotelData[hotelId]; // index of hotelData array
         console.log('GET /oneHotel', hotelId);
 
-        res.status(200);
-        res.json(thisHotel);
+        collection.findOne({
+            _id : ObjectId(hotelId)
+        }, (err, doc) =>{
+            res.status(200);
+            res.json(doc);
+        });
+
     },
 
     addNewHotel : (req, res) => {
-        console.log("POST /hotel/new");
-        console.log("POST /hotel body", req.body);
+        let db = dbconnection.getConn();
+        let collection = db.collection('hotels');
+        let newHotel;
 
-        res.status(200);
-        res.json(req.body);
+        console.log("POST /hotel/new");
+
+        if(req.body && req.body.name && req.body.stars){
+
+            newHotel = req.body;
+            newHotel.stars = parseInt(req.body.stars, 10);
+
+            console.log("POST /hotel body", newHotel);
+
+            collection.insertOne(newHotel, (err, response) =>{
+                console.log(response.ops);
+                res.status(201);
+                res.json(response.ops);
+            });
+        }else {
+            console.log("Data missing from Body");
+            res.status(400);
+            res.json({ message: "Required data missing from body"});
+        }
     }
 
 };

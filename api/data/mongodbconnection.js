@@ -17,6 +17,7 @@ module.exports = {
     },
 
     getConn : () => {
+        // console.log(_connection);
         return _connection;
     }
 };
