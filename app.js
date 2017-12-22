@@ -2,10 +2,10 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var app = express();
+var dbconnection = require('./api/data/db.js');
 var routes = require('./api/router');
-var dbconnection = require('./api/data/mongodbconnection.js');
 
-dbconnection.openConn();
+// dbconnection.openConn();
 app.set('port',3000);
 
 app.use(express.static(path.join(__dirname, 'public')));
